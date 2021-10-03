@@ -45,5 +45,5 @@
   tags: minecraft
 
 - name: Start server
-  command: java -Xmx1024M -Xms1024M -jar minecraft_server.1.17.1.jar nogui
+  command: java -Xmx1024M -Xms1024M -jar /opt/minecraft/minecraft_server.1.17.1.jar nogui
 
