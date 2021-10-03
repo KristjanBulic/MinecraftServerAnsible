@@ -1,0 +1,28 @@
+---
+- name: dnf update cache and all packages
+  dnf:
+    name: "*"
+    update_cache: yes
+    state: latest
+  become: true
+  tags:
+    - system
+    - never
+
+- name: Install required packages
+  dnf:
+    name:
+      - java-11-openjdk-devel
+      - screen
+  become: true
+  tags: minecraft
+
+- name: Open port 25565
+  firewalld:
+    port: "25565/tcp"
+    permanent: true
+    state: enabled
+    immediate: yes
+    notify: firewall reload
+    become: true
+    tags: nginx

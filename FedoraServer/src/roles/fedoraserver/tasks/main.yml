@@ -1,0 +1,18 @@
+---
+- name: dnf update cache and all packages
+  dnf:
+    name: "*"
+    update_cache: yes
+    state: latest
+  become: true
+  tags:
+    - system
+    - never
+
+- name: create minecraft user
+  user:
+    name: minecraft
+    state: present
+  become: true
+  tags:
+    - system
