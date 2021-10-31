@@ -1,19 +1,22 @@
 ---
-- name: dnf update cache and all packages
+- name: Update all packages to their latest version
   dnf:
     name: "*"
-    update_cache: yes
     state: latest
   become: true
-  tags:
-    - system
-    - never
+
+- name: Remove Java 1.8.0
+  dnf:
+    name: "java-1.8.0-openjdk"
+    state: removed
+  become: true
 
 - name: Install required packages
-  dnf:
-    name:
-      - java-11-openjdk-devel
+  apt:
+    pkg:
+      - java-latest-openjdk
       - screen
+    state: present
   become: true
   tags: minecraft
 
@@ -24,20 +27,31 @@
     state: enabled
     immediate: yes
     notify: firewall reload
-    become: true
-    tags: nginx
+  become: true
+  tags: nginx
 
 - name: Download minecraft server
   get_url:
     url: https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
-    dest: /opt/minecraft
+    dest: /home/minecraft
+  become: true
 
-- name: Accept eula
-  replace:
-    path: /opt/minecraft/eula.txt
-    regexp: 'eula=false'
-    replace: 'eula=true'
-  become_user: minecraft
+- name: accept Eula
+  template:
+    src: "files/eula.txt.tpl"
+    dest: /home/minecraft/eula.txt
+  become: true
+
+- name: add properties
+  template:
+    src: "files/server.properties.tpl"
+    dest: /home/minecraft/server.properties
+  become: true
+
+- name: add logs
+  template:
+    src: "files/latest.log.tpl"
+    dest: /home/minecraft/logs/latest.log
   become: true
 
 - name: Start screen
@@ -45,5 +59,5 @@
   tags: minecraft
 
 - name: Start server
-  command: java -Xmx1024M -Xms1024M -jar /opt/minecraft/minecraft_server.1.17.1.jar nogui
+  command: java -Xms1024M -jar server.jar nogui
 

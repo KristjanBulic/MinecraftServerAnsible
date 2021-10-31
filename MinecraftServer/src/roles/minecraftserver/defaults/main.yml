@@ -1,6 +1,6 @@
----
-- name: firewall reload
-  service:
-    name: firewalld
-    state: reloaded
-  become: true
+#---
+#- name: reload
+#  service:
+#    name: firewalld
+#    state: reloaded
+#  become: true

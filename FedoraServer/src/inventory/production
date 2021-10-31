@@ -1,2 +1,0 @@
-[minecraft]
-minecraft-dev ansible_connection=ssh ansible_host=10.10.10.157 ansible_user=root

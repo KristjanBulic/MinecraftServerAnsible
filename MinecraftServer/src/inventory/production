@@ -1,2 +1,2 @@
 [minecraft]
-minecraft-dev ansible_connection=ssh ansible_host=10.10.10.157 ansible_user=root
+minecraft-dev ansible_connection=ssh ansible_host=192.168.178.60 ansible_user=hotbox
